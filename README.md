@@ -30,9 +30,7 @@ This repository contains a simple Customer Bank Management System implemented in
 To use this Customer Bank Management System, follow these steps:
 
 1. Clone the repository to your local machine:
-   ```bash
-   git clone https://github.com/Sujal092004/Repositories.git
-   ```
+   
 
 2. Compile the code using a C compiler (e.g., GCC):
    ```bash
