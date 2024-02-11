@@ -1,414 +1,597 @@
-// Password :- login
 
+#include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 
-struct date
+void checkbalance(char *);
+void transfermoney(void);
+void display(char *);
+void person(char *);
+void login(void);
+void loginsu(void);
+void account(void);
+void accountcreated(void);
+void afterlogin(void);
+void logout(void);
+
+void gotoxy(int x, int y)
 {
-    int day, month, year;
+	COORD c;
+	c.X = x;
+	c.Y = y;
+
+	SetConsoleCursorPosition(
+		GetStdHandle(STD_OUTPUT_HANDLE), c);
+}
+
+struct pass
+{
+	char username[50];
+	int date, month, year;
+	char pnumber[15];
+	char adharnum[20];
+	char fname[20];
+	char lname[20];
+	char fathname[20];
+	char mothname[20];
+	char address[50];
+	char typeaccount[20];
 };
 
-struct account
+struct money
 {
-    char account_n[15];
-    char name[60];
-    int age;
-    struct date dob; // Add struct date for date of birth
-    char address[100];
-    char phone_number[15];
-    float amt;
+	char usernameto[50];
+	char userpersonfrom[50];
+	long int money1;
 };
 
-// # Customer Bank Management System
-
-// ![GitHub](https://img.shields.io/github/license/Sujal092004/Repositories) ![GitHub last commit](https://img.shields.io/github/last-commit/Sujal092004/Repositories)
-
-// This repository contains a simple Customer Bank Management System implemented in C. The system allows users to perform various banking operations, including opening a new account, viewing account details, and exiting the system. Users must enter a password to access the system.
-
-// ## Table of Contents
-
-// - [Features](#features)
-// - [Usage](#usage)
-// - [Author](#author)
-// - [License](#license)
-
-// ## Features
-
-// ### Password Protection
-// - The system is password-protected to ensure only authorized users can access it. The default password is "login."
-
-// ### New Account Opening
-// - Users can create a new bank account by providing details such as account number, name, date of birth, age, phone number, address, and initial deposit amount. The system validates age and requires a minimum initial deposit of Rs. 1000.
-
-// ### Show Account Details
-// - Users can view the details of an existing account by entering the account number. The system displays information such as account number, name, date of birth, age, phone number, address, and account balance.
-
-// ### Error Handling
-// - The system handles errors gracefully, providing appropriate messages when invalid inputs are provided or when an account is not found.
-
-// ## Usage
-
-// To use this Customer Bank Management System, follow these steps:
-
-// 1. Clone the repository to your local machine:
-//    ```bash
-//    git clone https://github.com/Sujal092004/Repositories.git
-//    ```
-
-// 2. Compile the code using a C compiler (e.g., GCC):
-//    ```bash
-//    gcc -o bank_system bank_system.c
-//    ```
-
-// 3. Run the compiled program:
-//    ```bash
-//    ./bank_system
-//    ```
-
-// 4. You will be prompted to enter the password. The default password is "login."
-
-// 5. Once authenticated, you can choose from the following options:
-//    - Option 1: New Account Opening
-//    - Option 2: Show Account Details
-//    - Option 3: Exit
-
-// ## Author
-
-// This Customer Bank Management System was developed by [SUJAl](https://github.com/Sujal092004).
-
-// ## License
-
-// This project is licensed under the [MIT License](LICENSE).
-
-// **Note:** This system is a basic example and may not be suit
-
-struct account edit(struct account *ad)
+struct userpass
 {
-    struct date dob;
-    struct account add;
-    int choice_back = 0;
-
-    printf("\nEnter option number you want to edit:");
-    printf("\n1) For Mobile/Phone Number");
-    printf("\n2) For Address");
-    printf("\n3) For date of Birth (DD/MM/YYYY)");
-    printf("\n4) For name ");
-    printf("\n5) For First Deposit amount");
-    printf("\nEnter option number: ");
-    scanf("%d", &choice_back);
-
-    switch (choice_back)
-    {
-    case 1:
-        printf("\nEnter Mobile/Phone Number: ");
-        scanf("%s", &add.phone_number);
-
-        break;
-    case 2:
-        printf("\nEnter Address: ");
-        scanf("%s", add.address);
-        break;
-    case 3:
-        printf("\nEnter date of Birth (DD/MM/YYYY): ");
-        scanf("%d/%d/%d", &dob.day, &dob.month, &dob.year);
-        break;
-    case 4:
-        printf("\nEnter the name: ");
-        scanf("%s", add.name);
-        break;
-    case 5:
-        printf("\nEnter First Deposit amount: ");
-        scanf("%f", &add.amt);
-        break;
-    default:
-        printf("\nInvalid option. Please try again.\n");
-        break;
-    }
-    system("cls");
-    *ad = add; // Update the original structure with the edited details
-
-    return *ad;
-}
-
-void account();
-void menu();
-void showAccountDetails(struct account acc);
-int login_page();
-struct account getAccountDetails(const char *accountNumber);
-
-void account()
-{
-    int choice_back, option;
-    FILE *ptr;
-    struct date new_date, dob;
-    struct account check, add;
-
-new_record:
-    printf("\n\t\t\t\t\tADD RECORD");
-    printf("\n\n\t\t\tEnter Today's Date (DD/MM/YYYY): ");
-    scanf("%d/%d/%d", &new_date.day, &new_date.month, &new_date.year);
-
-    printf("\nEnter The Account Number: ");
-    scanf("%s", check.account_n);
-    ptr = fopen("record.data", "r");
-
-    while (fscanf(ptr, "%d %d %d %s %s %d %d %d %d %s %s %f\n", &new_date.day, &new_date.month, &new_date.year, add.account_n, add.name, &dob.day, &dob.month, &dob.year, &add.age, add.address, add.phone_number, &add.amt) != EOF)
-    {
-        if (strcmp(check.account_n, add.account_n) == 0)
-        {
-            fclose(ptr);
-            printf("\nAccount number already in use!");
-        sel_option:
-            printf("\nTo start again press 1 and 0 to exit:\t");
-            scanf("%d", &choice_back);
-            if (choice_back == 1)
-            {
-                system("cls");
-                printf("\nYou can start again:");
-                goto new_record;
-            }
-            else if (choice_back == 0)
-            {
-                system("cls");
-                printf("\nGoing to exit:\n");
-                return;
-            }
-            else
-            {
-                printf("Invalid choice!\nTaking You back to select correct option \n");
-                goto sel_option;
-            }
-        }
-    }
-
-    fclose(ptr);
-    choice_back = 0;
-    strcpy(add.account_n, check.account_n);
-
-    printf("\nEnter the name: ");
-    scanf("%s", add.name);
-
-    printf("\nEnter date of Birth (DD/MM/YYYY): ");
-    scanf("%d/%d/%d", &dob.day, &dob.month, &dob.year);
-
-    printf("\nEnter the age: ");
-    scanf("%d", &add.age);
-    if (add.age >= 18)
-    {
-    }
-    else
-    {
-    select_opt2:
-        printf("\n\t\t\tplease accept terms and condition\n");
-        printf("\nyou have taken permission from your parent\nIf yes then type 1\nIf no type 0");
-        printf("\nEnter your selected option:\t");
-        scanf("%d", &choice_back);
-        if (choice_back == 1)
-        {
-            return;
-        }
-        else if (choice_back == 0)
-        {
-            system("cls");
-            menu();
-        }
-        else
-        {
-            printf("\n Invalid choice \n Please Enter Correct Option \n");
-            system("cls");
-            goto select_opt2;
-        }
-    }
-
-    printf("\nEnter Mobile/Phone Number: ");
-    scanf("%s", &add.phone_number);
-
-    printf("\nEnter Address: ");
-    scanf("%s", add.address);
-
-    printf("\nMinimum balance should be Rs. 1000, so deposit above 1000 Rs.");
-
-    printf("\nEnter First Deposit amount: ");
-    scanf("%f", &add.amt);
-details:
-    printf("Your Details that you have entered:\n");
-    printf("Account Opening Date (DD/MM/YYYY): %d/%d/%d\n", new_date.day, new_date.month, new_date.year);
-    printf("Entered Account Number: %s\n", add.account_n);
-    printf("Entered Name: %s\n", add.name);
-    printf("Entered Date of Birth (DD/MM/YYYY): %d/%d/%d\n", dob.day, dob.month, dob.year);
-    printf("Entered Age: %d\n", add.age);
-    printf("Entered Mobile Number: %s\n", add.phone_number);
-    printf("Entered Address: %s\n", add.address);
-    printf("\nEntered Details is correct\n Type 1 for YES and 0 for EDIT:");
-    scanf("%d", &option);
-    if (option == 1)
-    {
-    }
-    else if (option == 0)
-    {
-        system("cls");
-        add = edit(&add); // Call the edit() function and update the add structure
-        goto details;
-    }
-    else
-    {
-        printf("\nInvalid option.Please try again.");
-        goto details;
-    }
-
-    ptr = fopen("record.data", "a+");
-    fprintf(ptr, "%d %d %d %s %s %d %d %d %d %s %s %f\n",
-            new_date.day, new_date.month, new_date.year,
-            add.account_n, add.name, dob.day, dob.month, dob.year,
-            add.age, add.address, add.phone_number, add.amt);
-
-    fclose(ptr);
-    system("cls");
-
-    printf("\nAccount created successfully.\n");
-    printf("\nGoing back to menu ::");
-
-    menu();
-}
-
-void showAccountDetails(struct account acc)
-{
-    printf("\nAccount Details:\n");
-    printf("Account Number: %s\n", acc.account_n);
-    printf("Name: %s\n", acc.name);
-    printf("Date of Birth: %d/%d/%d\n", acc.dob.day, acc.dob.month, acc.dob.year);
-    printf("Age: %d\n", acc.age);
-    printf("Mobile Number: %s\n", acc.phone_number);
-    printf("Address: %s\n", acc.address);
-    printf("Balance: %.2f\n", acc.amt);
-}
-
-struct account getAccountDetails(const char *accountNumber)
-{
-    FILE *ptr = fopen("record.data", "r");
-    struct account acc;
-    int found = 0;
-
-    while (fscanf(ptr, "%d %d %d %s %s %d %d %d %d %s %s %f\n",
-                  &acc.dob.day, &acc.dob.month, &acc.dob.year,
-                  acc.account_n, acc.name, &acc.dob.day,
-                  &acc.dob.month, &acc.dob.year, &acc.age,
-                  acc.address, acc.phone_number, &acc.amt) != EOF)
-    {
-        if (strcmp(accountNumber, acc.account_n) == 0)
-        {
-            found = 1;
-            break;
-        }
-    }
-
-    fclose(ptr);
-
-    if (found)
-    {
-        return acc;
-    }
-    else
-    {
-        // Handle case when account number is not found
-        // You can return a default account or indicate an error
-        // Here, I'm assuming default values for the account
-        strcpy(acc.account_n, "N/A");
-        strcpy(acc.name, "N/A");
-        acc.dob.day = acc.dob.month = acc.dob.year = 0;
-        acc.age = 0;
-        strcpy(acc.address, "N/A");
-        strcpy(acc.phone_number, "N/A");
-        acc.amt = 0.0;
-        return acc;
-    }
-}
-
-void menu()
-{
-    int choice;
-home_page:
-    printf("\n\n\n\t\t\t\t\tCustomer Bank Management System");
-    printf("\n1. New Account Opening");
-    printf("\n2. Show Account Details"); // New option
-    printf("\n3. Exit");
-    printf("\n\n\t\tEnter Your Choice: ");
-    scanf("%d", &choice);
-    system("cls");
-
-    switch (choice)
-    {
-    case 1:
-        account();
-        break;
-    case 2:
-    {
-        char accountNumber[15];
-        printf("\nEnter Account Number: ");
-        scanf("%s", accountNumber);
-        struct account acc = getAccountDetails(accountNumber);
-        showAccountDetails(acc);
-        break;
-    }
-
-    case 3:
-        printf("\nThank you for using the Customer Bank Management System!\n");
-        break;
-    default:
-        printf("\nInvalid choice! Please try again.\n");
-        menu();
-        break;
-    }
-}
-
-int login_page()
-{
-    int main_exit;
-    char pass[10], password[10] = "login";
-
-    printf("\n\t\t\tEnter The Password To Login: ");
-    scanf("%s", pass);
-    system("cls");
-
-    if (strcmp(pass, password) == 0)
-    {
-        printf("\t\tPassword match\n\nLoading");
-        for (int i = 0; i <= 6; i++)
-        {
-            printf(".");
-        }
-        printf("\n");
-        system("cls");
-        menu();
-    }
-    else
-    {
-        printf("\n\t\tPassword Mismatch\n\n");
-        printf("\tEnter 1 to Retry and 0 to Exit: ");
-        scanf("%d", &main_exit);
-
-        if (main_exit == 1)
-        {
-            login_page();
-        }
-        else if (main_exit == 0)
-        {
-            system("cls");
-            printf("\nThank you for using the Customer Bank Management System!\n");
-        }
-        else
-        {
-            printf("Invalid choice!\nTaking You to Login Page\n");
-            login_page();
-        }
-    }
-
-    return 0;
-}
+	char password[50];
+};
 
 int main()
 {
-    login_page();
-    return 0;
+	int i, a, b, choice;
+	int passwordlength;
+
+	gotoxy(20, 3);
+
+	// Creating a Main
+	// menu for the user
+	printf("WELCOME TO BANK ACCOUNT SYSTEM\n\n");
+	gotoxy(18, 5);
+
+	printf("**********************************");
+	gotoxy(25, 7);
+
+	printf("DEVELOPER-Sujal Gupta");
+
+	gotoxy(20, 10);
+	printf("1.... CREATE A BANK ACCOUNT");
+
+	gotoxy(20, 12);
+	printf("2.... ALREADY A USER? SIGN IN");
+	gotoxy(20, 14);
+	printf("3.... EXIT\n\n");
+
+	printf("\n\nENTER YOUR CHOICE..");
+
+	scanf("%d", &choice);
+
+	switch (choice)
+	{
+	case 1:
+		system("cls");
+		printf("\n\n USERNAME 50 CHARACTERS MAX!!");
+		printf("\n\n PASSWORD 50 CHARACTERS MAX!!");
+		account();
+		break;
+
+	case 2:
+		login();
+		break;
+
+	case 3:
+		exit(0);
+		break;
+
+		getch();
+	}
+}
+
+// Function to create accounts
+// of users
+void account(void)
+{
+	char password[20];
+	int passwordlength, i, seek = 0;
+	char ch;
+	FILE *fp, *fu;
+	struct pass u1;
+	struct userpass p1;
+
+	struct userpass u2;
+
+	// Opening file to
+	// write data of a user
+	fp = fopen("username.txt", "ab");
+
+	// Inputs
+	system("cls");
+	printf("\n\n!!!!!CREATE ACCOUNT!!!!!");
+
+	printf("\n\nFIRST NAME..");
+	scanf("%s", &u1.fname);
+
+	printf("\n\n\nLAST NAME..");
+	scanf("%s", &u1.lname);
+
+	printf("\n\nFATHER's NAME..");
+	scanf("%s", &u1.fathname);
+
+	printf("\n\nMOTHER's NAME..");
+	scanf("%s", &u1.mothname);
+
+	printf("\n\nADDRESS..");
+	scanf("%s", &u1.address);
+
+	printf("\n\nACCOUNT TYPE");
+	scanf("%s", &u1.typeaccount);
+
+	printf("\n\nDATE OF BIRTH..");
+	printf("\nDATE-");
+	scanf("%d", &u1.date);
+	printf("\nMONTH-");
+	scanf("%d", &u1.month);
+	printf("\nYEAR-");
+	scanf("%d", &u1.year);
+
+	printf("\n\nADHAR NUMBER");
+	scanf("%s", u1.adharnum);
+
+	printf("\n\nPHONE NUMBER");
+	scanf("%s", u1.pnumber);
+
+	printf("\n\nUSERNAME.. ");
+	scanf("%s", &u1.username);
+
+	printf("\n\nPASSWORD..");
+
+	// Taking password in the form of
+	// stars
+	for (i = 0; i < 50; i++)
+	{
+		ch = getch(); // not echo to the screen
+		if (ch != 13)
+		{ // 13 is equal to enter in ascii
+			password[i] = ch;
+			ch = '*';
+			printf("%c", ch);
+		}
+		else
+			break;
+	}
+
+	// Writing to the file
+	fwrite(&u1, sizeof(u1),
+		   1, fp);
+
+	// Closing file
+	fclose(fp);
+
+	// Calling another function
+	// after successful creation
+	// of account
+	accountcreated();
+}
+
+// Successful account creation
+void accountcreated(void)
+{
+	int i;
+	char ch;
+	system("cls");
+	printf(
+		"PLEASE WAIT....\n\nYOUR DATA IS PROCESSING....");
+	for (i = 0; i < 200000000; i++)
+	{
+		i++;
+		i--;
+	}
+
+	gotoxy(30, 10);
+
+	printf("ACCOUNT CREATED SUCCESSFULLY....");
+	gotoxy(0, 20);
+
+	printf("Press enter to login");
+
+	getch();
+	login();
+}
+
+// Login function to check
+// the username of the user
+void login(void)
+{
+	system("cls");
+
+	char username[50];
+	char password[50];
+
+	int i, j, k;
+	char ch;
+	FILE *fp, *fu;
+	struct pass u1;
+	struct userpass u2;
+
+	// Opening file of
+	// user data
+	fp = fopen("username.txt",
+			   "rb");
+
+	if (fp == NULL)
+	{
+		printf("ERROR IN OPENING FILE");
+	}
+	gotoxy(34, 2);
+	printf(" ACCOUNT LOGIN ");
+	gotoxy(7, 5);
+	printf("***********************************************"
+		   "********************************");
+
+	gotoxy(35, 10);
+	printf("==== LOG IN ====");
+
+	// Take input
+	gotoxy(35, 12);
+	printf("USERNAME.. ");
+	scanf("%s", &username);
+
+	gotoxy(35, 14);
+	printf("PASSWORD..");
+
+	// Input the password
+	for (i = 0; i < 50; i++)
+	{
+		ch = getch();
+		if (ch != 13)
+		{
+			password[i] = ch;
+			ch = '*';
+			printf("%c", ch);
+		}
+
+		else
+			break;
+	}
+
+	// Checking if username
+	// exists in the file or not
+	while (fread(&u1, sizeof(u1),
+				 1, fp))
+	{
+		if (strcmp(username,
+				   u1.username) == 0)
+		{
+			loginsu();
+			display(username);
+		}
+	}
+
+	// Closing the file
+	fclose(fp);
+}
+
+// Redirect after
+// successful login
+void loginsu()
+{
+	int i;
+	FILE *fp;
+	struct pass u1;
+	system("cls");
+	printf("Fetching account details.....\n");
+	for (i = 0; i < 20000; i++)
+	{
+		i++;
+		i--;
+	}
+
+	gotoxy(30, 10);
+	printf("LOGIN SUCCESSFUL....");
+	gotoxy(0, 20);
+	printf("Press enter to continue");
+
+	getch();
+}
+
+// Display function to show the
+// data of the user on screen
+void display(char username1[])
+{
+	system("cls");
+	FILE *fp;
+	int choice, i;
+	fp = fopen("username.txt", "rb");
+	struct pass u1;
+
+	if (fp == NULL)
+	{
+		printf("error in opening file");
+	}
+
+	while (fread(&u1, sizeof(u1),
+				 1, fp))
+	{
+		if (strcmp(username1,
+				   u1.username) == 0)
+		{
+			gotoxy(30, 1);
+			printf("WELCOME, %s %s",
+				   u1.fname, u1.lname);
+			gotoxy(28, 2);
+			printf("..........................");
+			gotoxy(55, 6);
+			printf("==== YOUR ACCOUNT INFO ====");
+			gotoxy(55, 8);
+			printf("***************************");
+			gotoxy(55, 10);
+			printf("NAME..%s %s", u1.fname,
+				   u1.lname);
+
+			gotoxy(55, 12);
+			printf("FATHER's NAME..%s %s",
+				   u1.fathname,
+				   u1.lname);
+
+			gotoxy(55, 14);
+			printf("MOTHER's NAME..%s",
+				   u1.mothname);
+
+			gotoxy(55, 16);
+			printf("ADHAR CARD NUMBER..%s",
+				   u1.adharnum);
+
+			gotoxy(55, 18);
+			printf("MOBILE NUMBER..%s",
+				   u1.pnumber);
+
+			gotoxy(55, 20);
+			printf("DATE OF BIRTH.. %d-%d-%d",
+				   u1.date, u1.month, u1.year);
+
+			gotoxy(55, 22);
+			printf("ADDRESS..%s", u1.address);
+
+			gotoxy(55, 24);
+			printf("ACCOUNT TYPE..%s",
+				   u1.typeaccount);
+		}
+	}
+
+	fclose(fp);
+
+	gotoxy(0, 6);
+
+	// Menu to perform different
+	// actions by user
+	printf(" HOME ");
+	gotoxy(0, 7);
+	printf("******");
+	gotoxy(0, 9);
+	printf(" 1....CHECK BALANCE");
+	gotoxy(0, 11);
+	printf(" 2....TRANSFER MONEY");
+	gotoxy(0, 13);
+	printf(" 3....LOG OUT\n\n");
+	gotoxy(0, 15);
+	printf(" 4....EXIT\n\n");
+
+	printf(" ENTER YOUR CHOICES..");
+	scanf("%d", &choice);
+
+	switch (choice)
+	{
+	case 1:
+		checkbalance(username1);
+		break;
+
+	case 2:
+		transfermoney();
+		break;
+
+	case 3:
+		logout();
+		login();
+		break;
+
+	case 4:
+		exit(0);
+		break;
+	}
+}
+
+// Function to transfer
+// money from one user to
+// another
+void transfermoney()
+{
+	int i, j;
+	FILE *fm, *fp;
+	struct pass u1;
+	struct money m1;
+	char usernamet[20];
+	char usernamep[20];
+	system("cls");
+	fp = fopen("username.txt", "rb");
+
+	// Creating a another file
+	// to write amount along with
+	// username to which amount
+	// is going to be transferred
+	fm = fopen("mon.txt", "ab");
+
+	gotoxy(33, 4);
+	printf("---- TRANSFER MONEY ----");
+	gotoxy(33, 5);
+	printf("========================");
+
+	gotoxy(33, 11);
+	printf("FROM (your username).. ");
+	scanf("%s", &usernamet);
+
+	gotoxy(33, 13);
+	printf(" TO (username of person)..");
+	scanf("%s", &usernamep);
+
+	while (fread(&u1, sizeof(u1),
+				 1, fp))
+
+	{
+		if (strcmp(usernamep,
+				   u1.username) == 0)
+		{
+			strcpy(m1.usernameto,u1.username);
+			strcpy(m1.userpersonfrom,usernamet);
+		}
+	}
+	gotoxy(33, 16);
+
+	printf("ENTER THE AMOUNT TO BE TRANSFERRED..");
+	scanf("%d", &m1.money1);
+
+
+	fwrite(&m1, sizeof(m1),
+		   1, fm);
+
+	gotoxy(0, 26);
+	printf(
+		"--------------------------------------------------"
+		"--------------------------------------------");
+
+	gotoxy(0, 28);
+	printf(
+		"--------------------------------------------------"
+		"--------------------------------------------");
+
+	gotoxy(0, 29);
+	printf("transferring amount, Please wait..");
+
+	gotoxy(10, 27);
+	for (i = 0; i < 70; i++)
+	{
+		for (j = 0; j < 1200000; j++)
+		{
+			j++;
+			j--;
+		}
+		printf("*");
+	}
+
+	gotoxy(33, 40);
+	printf("AMOUNT SUCCESSFULLY TRANSFERRED....");
+	getch();
+
+	// Close the files
+	fclose(fp);
+	fclose(fm);
+
+	// Function to return
+	// to the home screen
+	display(usernamet);
+}
+
+// Function to check balance
+// in users account
+void checkbalance(char username2[])
+{
+	system("cls");
+	FILE *fm;
+	struct money m1;
+	char ch;
+	int i = 1, summoney = 0;
+
+	// Opening amount file record
+	fm = fopen("mon.txt", "rb");
+
+	int k = 5, l = 10;
+	int m = 30, n = 10;
+	int u = 60, v = 10;
+
+	gotoxy(30, 2);
+	printf("==== BALANCE DASHBOARD ====");
+	gotoxy(30, 3);
+	printf("***************************");
+	gotoxy(k, l);
+	printf("S no.");
+	gotoxy(m, n);
+	printf("TRANSACTION ID");
+	gotoxy(u, v);
+	printf("AMOUNT");
+
+	// Reading username to
+	// fetch the correct record
+	while (fread(&m1, sizeof(m1),
+				 1, fm))
+	{
+		if (strcmp(username2,
+				   m1.usernameto) == 0)
+		{
+			gotoxy(k, ++l);
+			printf("%d", i);
+			i++;
+			gotoxy(m, ++n);
+			printf("%s", m1.userpersonfrom);
+
+			gotoxy(u, ++v);
+			printf("%d", m1.money1);
+			// Adding and
+			// finding total money
+			summoney = summoney + m1.money1;
+		}
+	}
+
+	gotoxy(80, 10);
+	printf("TOTAL AMOUNT");
+
+	gotoxy(80, 12);
+	printf("%d", summoney);
+
+	getch();
+
+	// Closing file after
+	// reading it
+	fclose(fm);
+	display(username2);
+}
+
+// Logout function to bring
+// user to the login screen
+void logout(void)
+{
+	int i, j;
+	system("cls");
+	printf("please wait, logging out");
+
+	for (i = 0; i < 10; i++)
+	{
+		for (j = 0; j < 25000000; j++)
+		{
+			i++;
+			i--;
+		}
+		printf(".");
+	}
+
+	gotoxy(30, 10);
+	printf("Sign out successfully..\n");
+
+	gotoxy(0, 20);
+	printf("press any key to continue..");
+
+	getch();
 }
