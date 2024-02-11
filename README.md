@@ -1,7 +1,5 @@
 # Customer Bank Management System
 
-
-
 This repository contains a simple Customer Bank Management System implemented in C. The system allows users to perform various banking operations, including opening a new account, viewing account details, and exiting the system. Users must enter a password to access the system.
 
 ## Table of Contents
@@ -29,32 +27,8 @@ This repository contains a simple Customer Bank Management System implemented in
 
 To use this Customer Bank Management System, follow these steps:
 
-1. Clone the repository to your local machine:
-   
+1. Clone the repository to your local machine.
 
 2. Compile the code using a C compiler (e.g., GCC):
    ```bash
    gcc -o bank_system bank_system.c
-   ```
-
-3. Run the compiled program:
-   ```bash
-   ./bank_system
-   ```
-
-4. You will be prompted to enter the password. The default password is "login."
-
-5. Once authenticated, you can choose from the following options:
-   - Option 1: New Account Opening
-   - Option 2: Show Account Details
-   - Option 3: Exit
-
-## Author
-
-This Customer Bank Management System was developed by [SUJAl](https://github.com/Sujal092004).
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-**Note:** This system is a basic example and may not be suit
